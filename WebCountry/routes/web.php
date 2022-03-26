@@ -18,4 +18,4 @@ Route::get('/', function () {
 });
 
 
-Route::resource('countrys', 'App\Http\Controllers\CountryController');
+Route::resource('countrys', CountryController::class);

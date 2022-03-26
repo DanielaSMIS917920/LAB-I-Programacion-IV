@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Country;
 use Illuminate\Http\Request;
 
 class CountryController extends Controller
@@ -13,7 +14,8 @@ class CountryController extends Controller
      */
     public function index()
     {
-        //
+        $data['countries']=Country::paginate(5);
+        return view('country.index', $data);
     }
 
     /**
@@ -23,7 +25,7 @@ class CountryController extends Controller
      */
     public function create()
     {
-        //
+        return view('country.create');
     }
 
     /**
@@ -34,7 +36,9 @@ class CountryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $countryData = request()->except('_token');
+        Country::insert($countryData);
+        return redirect('country');
     }
 
     /**
@@ -56,7 +60,8 @@ class CountryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $country=Country::findOrFail($id);
+        return view('country.edit', compact('country'));
     }
 
     /**
@@ -68,7 +73,9 @@ class CountryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $countryData = request()->except(['_token','_method']);
+        Country::where('id', '=', $id)->update($countryData);
+        return redirect('country');
     }
 
     /**
@@ -79,6 +86,7 @@ class CountryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Country::destroy($id);
+        return redirect('country');
     }
 }
